@@ -1,0 +1,20 @@
+RewriteEngine On
+
+RewriteBase /pdo-pagination/
+
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteRule ^student/index?$ student/index.php
+RewriteRule ^student/create?$ student/create.php
+RewriteRule ^student/show/([0-9a-zA-z]+)$ student/show.php?id=$1 [NC,L]
+RewriteRule ^student/edit/([0-9]+)$ student/edit.php?update=$1 [NC,L]
+RewriteRule ^student/delete/([0-9]+)$ student/index.php?delete=$1 [NC,L]
+
+
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteRule ^teacher/index?$ teacher/index.php
+RewriteRule ^teacher/create?$ teacher/create.php
+RewriteRule ^teacher/show/([0-9a-zA-z]+)$ teacher/show.php?id=$1 [NC,L]
+RewriteRule ^teacher/edit/([0-9]+)$ teacher/edit.php?update=$1 [NC,L]
+RewriteRule ^teacher/delete/([0-9]+)$ teacher/index.php?delete=$1 [NC,L]
