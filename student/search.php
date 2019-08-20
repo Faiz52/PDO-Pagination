@@ -6,8 +6,8 @@ include 'base.php';
 ?>
 
 <div class="row">
-    <div class="col-lg-10" >
-        <form action="search" method="GET">
+    <div class="col-lg-10">
+        <form action="" method="GET">
             <div class="input-group">
                 <input type="text" class="form-control" placeholder="Search" name="query">
                 <div class="input-group-btn">
@@ -19,7 +19,7 @@ include 'base.php';
         <div class="col-lg-2">
             <a href="create" role="button" class="btn btn-primary float-right">INSERT DATA</a>
         </div>
-      </div>
+</div>
     <br>
     <br>
     <table class="table table-hover table-striped">
@@ -31,6 +31,7 @@ include 'base.php';
             <th>Image</th>
             <th>Action</th>
         </tr>
+
 <?php 
 
 $itemPerPage = 10;
@@ -47,23 +48,23 @@ if (!isset($_GET['page'])) {
     $page = $_GET['page'];
 }
 
-/*function create_url_slug($string){
-   $slug=preg_replace('/[^A-Za-z0-9-]+/', '-', $string);
-   return $slug;
-}*/
-
 $firstPageResult = ($page-1)*$itemPerPage;
 
-$sql = "SELECT * FROM student LIMIT $firstPageResult, $itemPerPage";
-$statement = $conn->prepare($sql);
-$statement->execute();
-$results = $statement->fetchAll(PDO::FETCH_OBJ);
 
-
-foreach($results as $result)
+if(isset($_GET['query']))
 {
- 
-?>
+    $search = $_GET['query'];
+
+    $sql = "SELECT * FROM student WHERE name LIKE '%{$search}%' OR email LIKE '%{$search}%' LIMIT $firstPageResult, $itemPerPage";
+    // echo $sql;
+    $statement = $conn->prepare($sql);
+    $statement->execute();
+    $results = $statement->fetchAll(PDO::FETCH_OBJ);
+}
+
+if($results):
+foreach($results as $result): ?>
+
         <tr>
             <td><?=$result->id; ?></td>
             <td><?=$result->name; ?></td>
@@ -77,10 +78,7 @@ foreach($results as $result)
                 <a href="delete/<?=$result->id ?>" class="btn btn-danger btn-sm" onClick="return confirm('Do you really want to delete');" role="button">Delete</a>
             </td>
         </tr>
-<?php  
-}
-        
-?>
+ <?php endforeach; ?>
 
     </table>
 
@@ -94,7 +92,7 @@ foreach($results as $result)
 ?>
         
         <li class="page-item">
-            <a class="page-link" href="index?page=<?=$i?>"><?=$i?>
+            <a class="page-link" href="search?query=<?=$search?>&page=<?=$i?>"><?=$i?>
                 <span class="sr-only">(current)</span>
             </a>
         </li>
@@ -107,8 +105,12 @@ foreach($results as $result)
    
   </ul>
 </nav>
-    
-</div>
+
+ <?php else: ?> 
+
+    <h3 class="text-center">No Result Found</h3>
+
+<?php endif; ?>
 
 <?php
 
@@ -127,9 +129,3 @@ if(isset($_GET['delete']))
 }
 
 ?>
-
-
-
-
-
-

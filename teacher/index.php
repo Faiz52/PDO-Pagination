@@ -7,9 +7,9 @@ include 'base.php';
 
 <div class="row">
     <div class="col-lg-10" >
-        <form action="" method="GET">
+        <form action="search" method="GET">
             <div class="input-group">
-                <input type="text" class="form-control" placeholder="Search" name="search">
+                <input type="text" class="form-control" placeholder="Search" name="query">
                 <div class="input-group-btn">
                     <input type="submit" class="btn btn-success" value="GO!">
                 </div>
@@ -47,13 +47,9 @@ if (!isset($_GET['page'])) {
     $page = $_GET['page'];
 }
 
-/*if(isset($_GET['search']))
-{
-    $search = $_GET['search'];
-
-    $sql = "SELECT * FROM myTable WHERE name LIKE {$search} OR email LIKE {$search}";
-    $statement = $conn->prepare($sql);
-    $statement->execute();
+/*function create_url_slug($string){
+   $slug=preg_replace('/[^A-Za-z0-9-]+/', '-', $string);
+   return $slug;
 }*/
 
 $firstPageResult = ($page-1)*$itemPerPage;
@@ -66,7 +62,7 @@ $results = $statement->fetchAll(PDO::FETCH_OBJ);
 
 foreach($results as $result)
 {
-
+ 
 ?>
         <tr>
             <td><?=$result->id; ?></td>
@@ -129,10 +125,6 @@ if(isset($_GET['delete']))
 
     <?php
 }
-
-
-
-
 
 ?>
 
